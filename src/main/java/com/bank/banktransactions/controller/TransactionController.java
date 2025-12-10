@@ -1,31 +1,54 @@
 package com.bank.banktransactions.controller;
 
+import com.bank.banktransactions.dto.TransactionObject;
+import com.bank.banktransactions.model.Transaction;
 import com.bank.banktransactions.service.TransactionService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@AllArgsConstructor
 @RequestMapping("transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
 
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
 
     @GetMapping("/getList")
-    public void getTransactions() {
+    public List<Transaction> getTransactions() {
+        try {
+            return transactionService.getList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/create")
-    public void createTransaction() {
+    public Transaction createTransaction(@RequestBody TransactionObject transaction) {
+        try {
+            return transactionService.create(transaction);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/update")
-    public void updateTransaction() {
+    public Transaction updateTransaction(@RequestBody TransactionObject transaction) {
+        try {
+            return transactionService.update(transaction);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DeleteMapping("/delete")
-    public void deleteTransaction() {
+    public void deleteTransaction(Long id) {
+        try {
+            transactionService.delete(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

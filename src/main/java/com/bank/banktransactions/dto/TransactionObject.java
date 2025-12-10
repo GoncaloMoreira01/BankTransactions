@@ -7,7 +7,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class transactionObject {
+public class TransactionObject {
+    private Long id;
     private double value;
     private LocalDate date;
 }

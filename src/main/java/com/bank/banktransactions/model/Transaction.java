@@ -19,4 +19,13 @@ public class Transaction {
 
     @Column(name = "schedule_date")
     private LocalDate scheduleDate;
+
+    public Transaction(double value, LocalDate scheduleDate) {
+        this.value = value;
+        this.scheduleDate = scheduleDate;
+    }
+
+    public Transaction() {
+
+    }
 }
