@@ -1,8 +1,12 @@
 package com.bank.banktransactions.service;
 
 import com.bank.banktransactions.dto.TransactionObject;
+import com.bank.banktransactions.interfaces.IFee;
 import com.bank.banktransactions.model.Transaction;
 import com.bank.banktransactions.repository.ITransactionRepo;
+import com.bank.banktransactions.strategy.TaxAStrategy;
+import com.bank.banktransactions.strategy.TaxBStrategy;
+import com.bank.banktransactions.strategy.TaxCStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,18 +50,11 @@ public class TransactionService {
 
     private double calculateFee(double value, LocalDate scheduleDate) {
         long daysBetweenTodayAndSchedule = ChronoUnit.DAYS.between(LocalDate.now(), scheduleDate);
-
-        if (value <= 1000 && daysBetweenTodayAndSchedule == 0) {
-            return value * 0.03 + 3;
-        }
-        if (value >= 1001 && value <= 2000 && daysBetweenTodayAndSchedule >= 1 && daysBetweenTodayAndSchedule <= 10) {
-            return value * 0.09;
-        }
-        if (value > 2000) {
-            if (daysBetweenTodayAndSchedule >= 11 && daysBetweenTodayAndSchedule <= 20) return value * 0.082;
-            if (daysBetweenTodayAndSchedule >= 21 && daysBetweenTodayAndSchedule <= 30) return value * 0.069;
-            if (daysBetweenTodayAndSchedule >= 31 && daysBetweenTodayAndSchedule <= 40) return value * 0.047;
-            if (daysBetweenTodayAndSchedule > 40) return value * 0.017;
+        List<IFee> strategies = List.of(new TaxAStrategy(), new TaxBStrategy(), new TaxCStrategy());
+        for (IFee strategy : strategies) {
+            if (strategy.isDaysAndValueCorrectToFee(value, daysBetweenTodayAndSchedule)) {
+                return strategy.calculate(value, daysBetweenTodayAndSchedule);
+            }
         }
 
         throw new IllegalArgumentException("Transaction does not match fee rules");
