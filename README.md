@@ -1,5 +1,5 @@
 
-# BankTransactions - Challenge by Natixis
+# BankTransactions
 - Application developed for managing banking transactions with automatic fee calculation.
 ## Used tecnologies:
  - Java springboot
