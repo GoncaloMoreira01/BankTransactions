@@ -1,7 +1,7 @@
 
-# BankTransactions
+# 🏦 BankTransactions
 - Application developed for managing banking transactions with automatic fee calculation.
-## Used tecnologies:
+## 🛠️ Used tecnologies:
  - Java springboot
  - Swagger
  - Maven
