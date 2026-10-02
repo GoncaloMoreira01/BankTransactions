@@ -1,7 +1,9 @@
 package com.bank.banktransactions.strategy;
 
 import com.bank.banktransactions.interfaces.IFee;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TaxAStrategy implements IFee {
     @Override
     public boolean isDaysAndValueCorrectToFee(double value, long daysBetweenTodayAndSchedule) {

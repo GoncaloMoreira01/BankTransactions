@@ -4,9 +4,6 @@ import com.bank.banktransactions.dto.TransactionObject;
 import com.bank.banktransactions.interfaces.IFee;
 import com.bank.banktransactions.model.Transaction;
 import com.bank.banktransactions.repository.ITransactionRepo;
-import com.bank.banktransactions.strategy.TaxAStrategy;
-import com.bank.banktransactions.strategy.TaxBStrategy;
-import com.bank.banktransactions.strategy.TaxCStrategy;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +17,7 @@ import java.util.List;
 public class TransactionService {
 
     private final ITransactionRepo iTransactionRepo;
+    private final List<IFee> feeStrategies;
 
     public List<Transaction> getList() {
         return iTransactionRepo.getTransactions();
@@ -50,8 +48,7 @@ public class TransactionService {
 
     private double calculateFee(double value, LocalDate scheduleDate) {
         long daysBetweenTodayAndSchedule = ChronoUnit.DAYS.between(LocalDate.now(), scheduleDate);
-        List<IFee> strategies = List.of(new TaxAStrategy(), new TaxBStrategy(), new TaxCStrategy());
-        for (IFee strategy : strategies) {
+        for (IFee strategy : feeStrategies) {
             if (strategy.isDaysAndValueCorrectToFee(value, daysBetweenTodayAndSchedule)) {
                 return strategy.calculate(value, daysBetweenTodayAndSchedule);
             }
