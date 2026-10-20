@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class TaxCStrategy implements IFee {
     @Override
     public boolean isDaysAndValueCorrectToFee(double value, long daysBetweenTodayAndSchedule) {
-        return value > 2000 && daysBetweenTodayAndSchedule >= 11;
+        return daysBetweenTodayAndSchedule >= 11;
     }
 
     @Override
